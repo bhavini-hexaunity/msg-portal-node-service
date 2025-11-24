@@ -1,49 +1,45 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
+import prisma from "../config/prisma";
 
-module.exports = {
+export const restaurantsRepository = {
   // Get all restaurants
   findAll: async () => {
     return await prisma.restaurant.findMany();
   },
 
   // Get one restaurant by ID
-  findById: async (id) => {
+  findById: async (id: string) => {
     return await prisma.restaurant.findUnique({
       where: { id },
     });
   },
 
   // Create a new restaurant
-  create: async (name) => {
+  create: async (name: string) => {
     const id = uuidv4();
 
-    const restaurant = await prisma.restaurant.create({
+    return await prisma.restaurant.create({
       data: {
         id,
         name,
       },
     });
-
-    return restaurant;
   },
 
   // Update by ID
-  update: async (id, name) => {
-    const restaurant = await prisma.restaurant.update({
+  update: async (id: string, name: string) => {
+    return await prisma.restaurant.update({
       where: { id },
       data: { name },
     });
-
-    return restaurant;
   },
 
   // Delete by ID
-  delete: async (id) => {
+  delete: async (id: string) => {
     await prisma.restaurant.delete({
       where: { id },
     });
+
     return { message: "Deleted successfully", id };
   },
 };
