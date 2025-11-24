@@ -12,12 +12,12 @@ const router = Router();
 
 router.get("/", asyncHandler(controller.list));
 
-router.get("/:id", validate(idParamSchema), asyncHandler(controller.get));
+router.post("/", validate(createRestaurantSchema, "body"), asyncHandler(controller.create));
 
-router.post("/", validate(createRestaurantSchema), asyncHandler(controller.create));
+router.get("/:id", validate(idParamSchema, "params"), asyncHandler(controller.get));
 
-router.put("/:id", validate(updateRestaurantSchema), asyncHandler(controller.updateById));
+router.put("/:id", validate(updateRestaurantSchema, "body"), asyncHandler(controller.updateById));
 
-router.delete("/:id", validate(idParamSchema), asyncHandler(controller.deleteById));
+router.delete("/:id", validate(idParamSchema, "params"), asyncHandler(controller.deleteById));
 
 export default router;

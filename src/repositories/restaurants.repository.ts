@@ -4,12 +4,12 @@ import prisma from "../config/prisma";
 export const restaurantsRepository = {
   // Get all restaurants
   findAll: async () => {
-    return await prisma.restaurant.findMany();
+    return await prisma.restaurants.findMany();
   },
 
   // Get one restaurant by ID
   findById: async (id: string) => {
-    return await prisma.restaurant.findUnique({
+    return await prisma.restaurants.findUnique({
       where: { id },
     });
   },
@@ -18,7 +18,7 @@ export const restaurantsRepository = {
   create: async (name: string) => {
     const id = uuidv4();
 
-    return await prisma.restaurant.create({
+    return await prisma.restaurants.create({
       data: {
         id,
         name,
@@ -28,7 +28,7 @@ export const restaurantsRepository = {
 
   // Update by ID
   update: async (id: string, name: string) => {
-    return await prisma.restaurant.update({
+    return await prisma.restaurants.update({
       where: { id },
       data: { name },
     });
@@ -36,7 +36,7 @@ export const restaurantsRepository = {
 
   // Delete by ID
   delete: async (id: string) => {
-    await prisma.restaurant.delete({
+    await prisma.restaurants.delete({
       where: { id },
     });
 
