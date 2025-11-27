@@ -5,7 +5,7 @@ import restaurantRoutes from "./routes/restaurants.routes"
 import { errorHandler } from "./middleware/errorHandler";
 import syncRoutes from "./routes/sync.routes";
 import { Decimal } from "@prisma/client/runtime/library";
-
+import toplineRoutes from "./routes/topline.routes";
 // 🌟 FIX BigInt JSON issue here
 (BigInt.prototype as any).toJSON = function () {
   return Number(this);
@@ -43,6 +43,7 @@ app.get("/health", (_req, res) => {
 // API Routes
 // ------------------------
 app.use("/api/v1/restaurants", restaurantRoutes);
+app.use("/api/v1/topline", toplineRoutes );
 app.use("/api/sheet-sync",syncRoutes);
 
 

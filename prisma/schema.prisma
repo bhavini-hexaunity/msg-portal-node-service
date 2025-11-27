@@ -27,16 +27,16 @@ model TopLine {
   day_name       String
   mod_name       String?
 
-  lunch_sales     Decimal @db.Decimal(10,2) @default(0)
-  dinner_sales    Decimal @db.Decimal(10,2) @default(0)
+  lunch_sales     Decimal? @db.Decimal(10,2) @default(0)
+  dinner_sales    Decimal? @db.Decimal(10,2) @default(0)
 
-  forecast_lunch  Decimal @db.Decimal(10,2) @default(0)
-  forecast_dinner Decimal @db.Decimal(10,2) @default(0)
+  forecast_lunch  Decimal? @db.Decimal(10,2) @default(0)
+  forecast_dinner Decimal? @db.Decimal(10,2) @default(0)
 
-  comp_total      Decimal @db.Decimal(10,2) @default(0)
-  void_total      Decimal @db.Decimal(10,2) @default(0)
+  comp_total      Decimal? @db.Decimal(10,2) @default(0)
+  void_total      Decimal? @db.Decimal(10,2) @default(0)
 
-  guest_count     Int     @default(0)
+  guest_count     Int?     @default(0)
   training_hours  String?
 
   @@unique([week_id, date], name: "week_id_date")

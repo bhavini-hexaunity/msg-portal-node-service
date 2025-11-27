@@ -52,6 +52,7 @@ export const weekIdParamSchema = Joi.object({
 
 export const syncToplineSchema = Joi.object({
   sheet_name: Joi.string().required(),
+
   field: Joi.string()
     .valid(
       "lunch_sales",
@@ -65,9 +66,18 @@ export const syncToplineSchema = Joi.object({
       "mod_name",
       "day_name",
     ).required(),
+
   date: Joi.string()
     .pattern(/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}$/) // MM/DD/YYYY
     .required(),
+
   day_name: Joi.string().optional().allow(null, ""),
-  value: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
+
+  value: Joi.alternatives()
+    .try(
+      Joi.number(),
+      Joi.string().allow("", null)
+    )
+    .optional(),
+
 });

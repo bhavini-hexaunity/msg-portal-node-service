@@ -4,7 +4,8 @@ import {
   parseMMDDYYYY,
   getDayName,
   getWeekRange,
-  generateWeekId
+  generateWeekId,
+  normalizeValue
 } from "../utils/helper";
 
 export const syncToplineService = {
@@ -43,13 +44,16 @@ export const syncToplineService = {
     const day_name =
       payload.day_name?.trim() || getDayName(safeDate);
 
-    // 3. Upsert topline row
+    // 3 — Normalize value based on field type
+    const cleanValue = normalizeValue(payload.field, payload.value);
+
+    // 4 — UPSERT
     return await topLineRepository.upsertByWeekAndDate(
       week_id,
       safeDate,
       day_name,
       payload.field,
-      payload.value
+      cleanValue
     );
   },
 };

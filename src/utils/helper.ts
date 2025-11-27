@@ -77,3 +77,16 @@ export function generateWeekId(date: Date): string {
     if (!(date instanceof Date) || isNaN(date.getTime())) return "invalid_week";
     return date.toISOString().split("T")[0] + "_week";
 }
+
+
+export function normalizeValue(field: string, value: any) {
+  if (value === "" || value === null || value === undefined) {
+    return null;
+  }
+
+  // Trim string values
+  if (typeof value === "string" && value.trim() === "") {
+    return null;
+  }
+  return value;
+}

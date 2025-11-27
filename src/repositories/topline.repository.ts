@@ -114,5 +114,5 @@ export const topLineRepository = {
         [field]: value
       }
     });
-  }
+  },
 };
