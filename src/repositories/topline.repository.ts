@@ -32,9 +32,11 @@ export const topLineRepository = {
     day_name: string;
     mod_name?: string | null;
 
+    total_sales: number;
     lunch_sales: number;
     dinner_sales: number;
 
+    total_forecast: number;
     forecast_lunch: number;
     forecast_dinner: number;
 
@@ -58,9 +60,11 @@ export const topLineRepository = {
       day_name?: string;
       mod_name?: string | null;
 
+      total_sales: number;
       lunch_sales?: number;
       dinner_sales?: number;
 
+      total_forecast: number;
       forecast_lunch?: number;
       forecast_dinner?: number;
 
