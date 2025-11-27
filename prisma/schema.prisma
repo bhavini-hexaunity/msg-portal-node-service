@@ -27,9 +27,11 @@ model TopLine {
   day_name       String
   mod_name       String?
 
+  total_sales     Decimal? @db.Decimal(10,2) @default(0)
   lunch_sales     Decimal? @db.Decimal(10,2) @default(0)
   dinner_sales    Decimal? @db.Decimal(10,2) @default(0)
 
+  total_forecast  Decimal? @db.Decimal(10,2) @default(0)
   forecast_lunch  Decimal? @db.Decimal(10,2) @default(0)
   forecast_dinner Decimal? @db.Decimal(10,2) @default(0)
 

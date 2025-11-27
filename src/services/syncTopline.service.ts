@@ -1,11 +1,11 @@
 import { topLineRepository } from "../repositories/topline.repository";
 import { weeksRepository } from "../repositories/weeks.repository";
 import {
-  parseMMDDYYYY,
   getDayName,
   getWeekRange,
   generateWeekId,
-  normalizeValue
+  normalizeValue,
+  normalizeMMDDYYYY
 } from "../utils/helper";
 
 export const syncToplineService = {
@@ -21,7 +21,7 @@ export const syncToplineService = {
       throw new Error("Missing required field: date");
     }
 
-    const safeDate: string = payload.date;
+    const safeDate: string = normalizeMMDDYYYY(payload.date);
 
     // 1. Get or create week
     let week = await weeksRepository.findBySheetName(payload.sheet_name);

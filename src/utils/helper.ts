@@ -1,5 +1,3 @@
-// src/utils/helper.ts
-
 /**
  * Convert MM/DD/YYYY → JS Date
  * Accepts undefined safely
@@ -89,4 +87,26 @@ export function normalizeValue(field: string, value: any) {
     return null;
   }
   return value;
+}
+
+/**
+ * Normalize date input to MM/DD/YYYY format
+ * Accepts: "02/17/2025", "2/17/2025", "2/7/2025", Date object
+ */
+export function normalizeMMDDYYYY(input: string | Date): string {
+  let date: Date;
+
+  if (input instanceof Date) {
+    date = input;
+  } else {
+    const d = new Date(input);
+    if (isNaN(d.getTime())) return ""; 
+    date = d;
+  }
+
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  const yyyy = date.getFullYear();
+
+  return `${mm}/${dd}/${yyyy}`;
 }
