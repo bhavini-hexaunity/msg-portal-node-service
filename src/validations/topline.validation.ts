@@ -55,8 +55,10 @@ export const syncToplineSchema = Joi.object({
 
   field: Joi.string()
     .valid(
+      "total_sales",
       "lunch_sales",
       "dinner_sales",
+      "total_forecast",
       "forecast_lunch",
       "forecast_dinner",
       "comp_total",
