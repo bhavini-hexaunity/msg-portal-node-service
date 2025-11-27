@@ -3,6 +3,18 @@ import cors from "cors";
 import morgan from "morgan";
 import restaurantRoutes from "./routes/restaurants.routes"
 import { errorHandler } from "./middleware/errorHandler";
+import syncRoutes from "./routes/sync.routes";
+import { Decimal } from "@prisma/client/runtime/library";
+
+// 🌟 FIX BigInt JSON issue here
+(BigInt.prototype as any).toJSON = function () {
+  return Number(this);
+};
+
+// Convert Prisma Decimal -> Number in all JSON responses
+(Decimal.prototype as any).toJSON = function () {
+  return Number(this);
+};
 
 const app: Application = express();
 
@@ -14,17 +26,7 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev")); // Logs all requests in dev mode
 
-// ------------------------
-// Sheet API
-// ------------------------
-app.post("/api/sheet-sync", (req, res) => {
-  console.log("Received data:", req.body);
-  res.status(200).json({
-    success: true,
-    message: "Data received",
-    received: req.body,
-  });
-});
+
 
 // ------------------------
 // Health Check Route
@@ -41,6 +43,8 @@ app.get("/health", (_req, res) => {
 // API Routes
 // ------------------------
 app.use("/api/v1/restaurants", restaurantRoutes);
+app.use("/api/sheet-sync",syncRoutes);
+
 
 // ------------------------
 // 404 Handler

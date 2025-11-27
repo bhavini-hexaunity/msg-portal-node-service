@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `TopLine` MODIFY `date` VARCHAR(191) NOT NULL;
