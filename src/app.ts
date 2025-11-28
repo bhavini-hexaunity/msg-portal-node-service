@@ -7,7 +7,7 @@ import syncRoutes from "./routes/sync.routes";
 import { Decimal } from "@prisma/client/runtime/library";
 import toplineRoutes from "./routes/topline.routes";
 import profitRoutes from "./routes/profit.routes";
-import depositRoutes from "./routes/profit.routes";
+import depositRoutes from "./routes/deposit.routes";
 
 
 // 🌟 FIX BigInt JSON issue here
