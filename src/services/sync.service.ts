@@ -50,26 +50,16 @@ export const syncProfitService = {
     value: number | string;
   }) => {
 
-    console.log("🟡 [PROFIT SERVICE] Raw Payload:", payload);
 
     const safeDate: string = normalizeMMDDYYYY(payload.date);
-    console.log("📅 [PROFIT SERVICE] Normalized Date:", safeDate);
 
 
     // ⭐ REUSE getOrCreateWeek()
     const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
-    console.log("🆔 [PROFIT SERVICE] Week:", week.week_id);
 
     // 3 — Normalize value based on field type
     const cleanValue = normalizeValue(payload.field, payload.value);
-    console.log("🧹 [PROFIT SERVICE] Clean Value:", cleanValue);
-    
-    console.log("📤 [PROFIT SERVICE] Sending to Repository:", {
-      week_id: week.week_id,
-      safeDate,
-      field: payload.field,
-      cleanValue
-    });
+
 
     // 4 — UPSERT
     return await profitRepository.upsertByWeekAndDate(
