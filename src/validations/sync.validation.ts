@@ -54,12 +54,11 @@ export const syncProfitSchema = Joi.object({
       "foh_reg_wages",
       "foh_ot_hours",
       "foh_ot_wages",
-
       "boh_reg_hours",
       "boh_reg_wages",
       "boh_ot_hours",
       "boh_ot_wages",
-
+      "day_name",
       "comments"
     )
     .required(),
@@ -76,7 +75,7 @@ export const syncDepositSchema = Joi.object({
   sheet_name: Joi.string().required(),
 
   field: Joi.string()
-    .valid("actual", "amount_due")
+    .valid("actual", "amount_due","day_name")
     .required(),
 
   date: Joi.string().pattern(Constant.mmddyyyy).required(),
