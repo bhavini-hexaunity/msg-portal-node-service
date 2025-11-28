@@ -6,6 +6,10 @@ import { errorHandler } from "./middleware/errorHandler";
 import syncRoutes from "./routes/sync.routes";
 import { Decimal } from "@prisma/client/runtime/library";
 import toplineRoutes from "./routes/topline.routes";
+import profitRoutes from "./routes/profit.routes";
+import depositRoutes from "./routes/profit.routes";
+
+
 // 🌟 FIX BigInt JSON issue here
 (BigInt.prototype as any).toJSON = function () {
   return Number(this);
@@ -26,8 +30,6 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev")); // Logs all requests in dev mode
 
-
-
 // ------------------------
 // Health Check Route
 // ------------------------
@@ -44,6 +46,8 @@ app.get("/health", (_req, res) => {
 // ------------------------
 app.use("/api/v1/restaurants", restaurantRoutes);
 app.use("/api/v1/topline", toplineRoutes );
+app.use("/api/v1/profit", profitRoutes );
+app.use("/api/v1/deposit", depositRoutes );
 app.use("/api/sheet-sync",syncRoutes);
 
 

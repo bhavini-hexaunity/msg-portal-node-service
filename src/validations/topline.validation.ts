@@ -1,11 +1,11 @@
 import Joi from "joi";
+import { Constant } from "../utils/app.constant";
 
-const mmddyyyy = /^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}$/;
 
 export const createTopLineSchema = Joi.object({
   week_id: Joi.string().required(),
 
-  date: Joi.string().pattern(mmddyyyy).required(),
+  date: Joi.string().pattern(Constant.mmddyyyy).required(),
 
   day_name: Joi.string().optional().allow(null, ""),
   mod_name: Joi.string().optional().allow(null, ""),
@@ -24,7 +24,7 @@ export const createTopLineSchema = Joi.object({
 });
 
 export const updateTopLineSchema = Joi.object({
-  date: Joi.string().pattern(mmddyyyy).optional(),
+  date: Joi.string().pattern(Constant.mmddyyyy).optional(),
 
   day_name: Joi.string().optional().allow(null, ""),
   mod_name: Joi.string().optional().allow(null, ""),
@@ -50,36 +50,3 @@ export const weekIdParamSchema = Joi.object({
   week_id: Joi.string().required(),
 });
 
-export const syncToplineSchema = Joi.object({
-  sheet_name: Joi.string().required(),
-
-  field: Joi.string()
-    .valid(
-      "total_sales",
-      "lunch_sales",
-      "dinner_sales",
-      "total_forecast",
-      "forecast_lunch",
-      "forecast_dinner",
-      "comp_total",
-      "void_total",
-      "guest_count",
-      "training_hours",
-      "mod_name",
-      "day_name",
-    ).required(),
-
-  date: Joi.string()
-    .pattern(/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}$/) // MM/DD/YYYY
-    .required(),
-
-  day_name: Joi.string().optional().allow(null, ""),
-
-  value: Joi.alternatives()
-    .try(
-      Joi.number(),
-      Joi.string().allow("", null)
-    )
-    .optional(),
-
-});

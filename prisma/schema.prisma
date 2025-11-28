@@ -48,26 +48,26 @@ model TopLine {
 model Profit {
   id                BigInt   @id @default(autoincrement())
   week_id           String
-  date              DateTime @db.Date
+  date              String
 
-  main_room_sales   Decimal @db.Decimal(10,2) @default(0)
-  patio_sales       Decimal @db.Decimal(10,2) @default(0)
-  third_party_sales Decimal @db.Decimal(10,2) @default(0)
-  togo_sales        Decimal @db.Decimal(10,2) @default(0)
-  catering          Decimal @db.Decimal(10,2) @default(0)
+  main_room_sales   Decimal? @db.Decimal(10,2) @default(0)
+  patio_sales       Decimal? @db.Decimal(10,2) @default(0)
+  third_party_sales Decimal? @db.Decimal(10,2) @default(0)
+  togo_sales        Decimal? @db.Decimal(10,2) @default(0)
+  catering          Decimal? @db.Decimal(10,2) @default(0)
 
-  alcohol_sales     Decimal @db.Decimal(10,2) @default(0)
-  na_bev_sales      Decimal @db.Decimal(10,2) @default(0)
+  alcohol_sales     Decimal? @db.Decimal(10,2) @default(0)
+  na_bev_sales      Decimal? @db.Decimal(10,2) @default(0)
 
-  foh_reg_hours     Decimal @db.Decimal(10,2) @default(0)
-  foh_reg_wages     Decimal @db.Decimal(10,2) @default(0)
-  foh_ot_hours      Decimal @db.Decimal(10,2) @default(0)
-  foh_ot_wages      Decimal @db.Decimal(10,2) @default(0)
+  foh_reg_hours     Decimal? @db.Decimal(10,2) @default(0)
+  foh_reg_wages     Decimal? @db.Decimal(10,2) @default(0)
+  foh_ot_hours      Decimal? @db.Decimal(10,2) @default(0)
+  foh_ot_wages      Decimal? @db.Decimal(10,2) @default(0)
 
-  boh_reg_hours     Decimal @db.Decimal(10,2) @default(0)
-  boh_reg_wages     Decimal @db.Decimal(10,2) @default(0)
-  boh_ot_hours      Decimal @db.Decimal(10,2) @default(0)
-  boh_ot_wages      Decimal @db.Decimal(10,2) @default(0)
+  boh_reg_hours     Decimal? @db.Decimal(10,2) @default(0)
+  boh_reg_wages     Decimal? @db.Decimal(10,2) @default(0)
+  boh_ot_hours      Decimal? @db.Decimal(10,2) @default(0)
+  boh_ot_wages      Decimal? @db.Decimal(10,2) @default(0)
 
   comments          String? @db.LongText
 
@@ -78,10 +78,10 @@ model Profit {
 model Deposit {
   id         BigInt   @id @default(autoincrement())
   week_id    String
-  date       DateTime @db.Date
+  date       String
 
-  actual     Decimal @db.Decimal(10,2) @default(0)
-  amount_due Decimal @db.Decimal(10,2) @default(0)
+  actual     Decimal? @db.Decimal(10,2) @default(0)
+  amount_due Decimal? @db.Decimal(10,2) @default(0)
 
   @@unique([week_id, date], name: "deposit_week_id_date")
   @@index([week_id])

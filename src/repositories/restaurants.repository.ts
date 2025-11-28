@@ -17,7 +17,6 @@ export const restaurantsRepository = {
   // Create a new restaurant
   create: async (name: string) => {
     const id = uuidv4();
-
     return await prisma.restaurants.create({
       data: {
         id,
@@ -39,7 +38,6 @@ export const restaurantsRepository = {
     await prisma.restaurants.delete({
       where: { id },
     });
-
     return { message: "Deleted successfully", id };
   },
 };

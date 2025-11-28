@@ -1,15 +1,27 @@
 import { Router } from "express";
 import { asyncHandler } from "../middleware/asyncHandler";
-import * as toplineController from "../controllers/syncTopline.controller";
+import * as syncController from "../controllers/sync.controller";
 import { validate } from "../middleware/validate";
-import { syncToplineSchema } from "../validations/topline.validation";
+import { syncDepositSchema, syncProfitSchema, syncToplineSchema } from "../validations/sync.validation";
 
 const router = Router();
 
 router.post(
   "/topline",
   validate(syncToplineSchema,"body"),
-  asyncHandler(toplineController.handleToplineSync)
+  asyncHandler(syncController.handleToplineSync)
+);
+
+router.post(
+  "/profit",
+  validate(syncProfitSchema,"body"),
+  asyncHandler(syncController.handleProfitSync)
+);
+
+router.post(
+  "/deposit",
+  validate(syncDepositSchema, "body"),
+  asyncHandler(syncController.handleDepositSync)
 );
 
 export default router;
