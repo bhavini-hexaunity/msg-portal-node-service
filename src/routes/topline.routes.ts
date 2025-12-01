@@ -15,6 +15,9 @@ const router = Router();
 // GET all topline rows
 router.get("/", asyncHandler(controller.list));
 
+router.get("/range", asyncHandler(controller.getByDateRange));
+
+
 // GET by week_id
 router.get(
   "/week/:week_id",

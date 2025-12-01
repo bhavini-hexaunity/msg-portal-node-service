@@ -8,6 +8,9 @@ export const depositService = {
 
   findByWeek: (week_id: string) => depositRepository.findByWeek(week_id),
 
+  findByDateRange: async (start: string, end: string) =>
+    depositRepository.findByDateRange(start, end),
+
   create: (payload: any) => {
     payload.date = normalizeMMDDYYYY(payload.date);
     return depositRepository.create(payload);

@@ -18,6 +18,16 @@ export const profitRepository = {
             orderBy: { date: "asc" }
         });
     },
+    findByDateRange: async (start: string, end: string) => {
+        return prisma.$queryRaw`
+            SELECT *
+            FROM Profit
+            WHERE STR_TO_DATE(date, '%m/%d/%Y')
+                BETWEEN STR_TO_DATE(${start}, '%m/%d/%Y')
+                AND STR_TO_DATE(${end}, '%m/%d/%Y')
+            ORDER BY STR_TO_DATE(date, '%m/%d/%Y')
+        `;
+    },
     create: async (data: {
         week_id: string;
         date: string;

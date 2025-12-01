@@ -1,4 +1,4 @@
-import { profitRepository } from "../repositories/profile.repository";
+import { profitRepository } from "../repositories/profit.repository";
 
 export const profitService = {
   findAll: async () => {
@@ -11,6 +11,10 @@ export const profitService = {
 
   findByWeek: async (week_id: string) => {
     return await profitRepository.findByWeek(week_id);
+  },
+
+  findByDateRange: async (start: string, end: string) => { 
+    return await profitRepository.findByDateRange(start, end); 
   },
 
   create: async (payload: any) => {

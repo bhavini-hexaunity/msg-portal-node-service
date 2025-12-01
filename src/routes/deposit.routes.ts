@@ -15,6 +15,8 @@ const router = Router();
 
 // CRUD
 router.get("/", asyncHandler(controller.list));
+router.get("/range", asyncHandler(controller.getByDateRange));
+
 
 router.post("/", validate(createDepositSchema, "body"), asyncHandler(controller.create));
 

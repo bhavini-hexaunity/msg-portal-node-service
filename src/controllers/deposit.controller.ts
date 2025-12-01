@@ -23,6 +23,21 @@ export const findByWeek: RequestHandler = async (req, res) => {
     res.json({ success: true, data: rows });
 };
 
+
+export const getByDateRange: RequestHandler = async (req, res) => {
+  const { start, end } = req.query;
+
+  if (!start || !end) {
+    return res.status(400).json({
+      success: false,
+      message: "start and end query params are required",
+    });
+  }
+
+  const data = await depositService.findByDateRange(start as string, end as string);
+  res.json({ success: true, data });
+};
+
 export const updateById: RequestHandler = async (req, res) => {
     const id = BigInt(req.params.id!);
     const updated = await depositService.update(id, req.body);

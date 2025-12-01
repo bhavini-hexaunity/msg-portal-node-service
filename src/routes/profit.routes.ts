@@ -12,6 +12,8 @@ const router = Router();
 
 router.get("/", asyncHandler(controller.list));
 
+router.get("/range", asyncHandler(controller.getByDateRange));
+
 router.post("/", validate(createProfitSchema, "body"), asyncHandler(controller.create));
 
 router.get("/:id", validate(idParamSchema, "params"), asyncHandler(controller.getById));

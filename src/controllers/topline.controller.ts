@@ -6,6 +6,20 @@ export const list: RequestHandler = async (req, res) => {
   res.json({ success: true, data });
 };
 
+export const getByDateRange: RequestHandler = async (req, res) => {
+  const { start, end } = req.query;
+
+  if (!start || !end) {
+    return res.status(400).json({
+      success: false,
+      message: "start and end query params are required",
+    });
+  }
+
+  const data = await topLineService.findByDateRange(start as string, end as string);
+  res.json({ success: true, data });
+};
+
 export const getById: RequestHandler = async (req, res) => {
   const id = BigInt(req.params.id!); 
   const data = await topLineService.findById(id);

@@ -14,6 +14,17 @@ export const topLineRepository = {
       where: { id },
     }),
 
+  findByDateRange: async (start: string, end: string) => {
+    return prisma.$queryRaw`
+    SELECT *
+    FROM TopLine
+    WHERE STR_TO_DATE(date, '%m/%d/%Y')
+          BETWEEN STR_TO_DATE(${start}, '%m/%d/%Y')
+          AND STR_TO_DATE(${end}, '%m/%d/%Y')
+    ORDER BY STR_TO_DATE(date, '%m/%d/%Y')
+  `;
+  },
+
   /**
    * Find all rows for a given week
    */

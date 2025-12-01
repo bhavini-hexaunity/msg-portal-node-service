@@ -1,5 +1,5 @@
 import { topLineRepository } from "../repositories/topline.repository";
-import { profitRepository } from "../repositories/profile.repository";
+import { profitRepository } from "../repositories/profit.repository";
 import { depositRepository } from "../repositories/deposit.repository";
 
 import { weeksService } from "./weeks.service";

@@ -13,6 +13,17 @@ export const depositRepository = {
         });
     },
 
+    findByDateRange: async (start: string, end: string) => {
+        return prisma.$queryRaw`
+            SELECT *
+            FROM Deposit
+            WHERE STR_TO_DATE(date, '%m/%d/%Y')
+                BETWEEN STR_TO_DATE(${start}, '%m/%d/%Y')
+                AND STR_TO_DATE(${end}, '%m/%d/%Y')
+            ORDER BY STR_TO_DATE(date, '%m/%d/%Y')
+        `;
+    },
+
     findByWeek: async (week_id: string) => {
         return await prisma.deposit.findMany({
             where: { week_id },
@@ -23,7 +34,7 @@ export const depositRepository = {
     create: async (data: {
         week_id: string;
         date: string;
-        actual?: number ;
+        actual?: number;
         amount_due?: number;
     }) => {
         return await prisma.deposit.create({ data });
@@ -33,8 +44,8 @@ export const depositRepository = {
         id: bigint,
         data: {
             date?: string;
-            actual?: number ;
-            amount_due?: number ;
+            actual?: number;
+            amount_due?: number;
         }
     ) => {
         return await prisma.deposit.update({

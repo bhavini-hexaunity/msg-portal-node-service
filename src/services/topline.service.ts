@@ -5,6 +5,9 @@ export const topLineService = {
     return await topLineRepository.findAll();
   },
 
+  findByDateRange: async (start: string, end: string) =>
+    topLineRepository.findByDateRange(start, end),
+
   findById: async (id: bigint) => {
     return await topLineRepository.findById(id);
   },
