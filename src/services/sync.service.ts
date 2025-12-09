@@ -8,6 +8,11 @@ import {
   normalizeMMDDYYYY,
   normalizeValue,
 } from "../utils/helper";
+import { peopleRepository } from "../repositories/people.repository";
+import { operationsRepository } from "../repositories/operations.repository";
+import { salesPerHourRepository } from "../repositories/salesPerHour.repository";
+import { foodCostRepository } from "../repositories/foodCostTracking.repository";
+import { scheduledStaffRepository } from "../repositories/scheduledStaff.repository";
 
 export const syncToplineService = {
   upsert: async (payload: {
@@ -92,3 +97,137 @@ export const syncDepositService = {
     );
   }
 };
+
+export const syncPeopleService = {
+  upsert: async (payload: {
+    sheet_name: string;
+    field: string;
+    date: string;
+    value: number | string;
+  }) => {
+    // Implementation would go here
+    const safeDate = normalizeMMDDYYYY(payload.date);
+
+    const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
+    const cleanValue = normalizeValue(payload.field, payload.value);
+
+    // Assuming there's a peopleRepository similar to the others
+    return await peopleRepository.upsertByWeekAndDate(
+      week.week_id,
+      safeDate,
+      payload.field,
+      cleanValue
+    );
+  },
+};
+
+export const syncOperationsService = {
+  upsert: async (payload: {
+    sheet_name: string;
+    field: string;
+    date: string;
+    value: number | string;
+  }) => {
+    // Implementation would go here
+    const safeDate = normalizeMMDDYYYY(payload.date);
+    const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
+
+    const cleanValue = normalizeValue(payload.field, payload.value);
+
+    const isGuestHour = /^\d{1,2}-\d{1,2}$/.test(payload.field);
+
+    if (isGuestHour) {
+      // save into guestCount table
+      return await operationsRepository.upsertGuestCount(
+        week.week_id,
+        safeDate,
+        payload.field,
+        cleanValue
+      );
+    }
+
+    // Assuming there's an operationsRepository similar to the others
+    return await operationsRepository.upsertByWeekAndDate(
+      week.week_id,
+      safeDate,
+      payload.field,
+      cleanValue
+    );
+  },
+};
+
+export const syncSalesPerHourService = {
+  upsert: async (payload: {
+    sheet_name: string;
+    field: string;
+    date: string;
+    value: number | string;
+  }) => {
+    // Implementation would go here 
+    const safeDate = normalizeMMDDYYYY(payload.date);
+
+    const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
+    const hour = payload.field;     // "11-12"
+    const amount = normalizeValue("amount", payload.value);
+    return await salesPerHourRepository.upsertHour(
+      week.week_id,
+      safeDate,
+      hour,
+      amount
+    );
+  },
+};
+
+export const syncFoodCostTrackingService = {
+  upsert: async (payload: {
+    sheet_name: string;
+    field: string;
+    date: string;
+    value: number | string;
+  }) => {
+    const safeDate = normalizeMMDDYYYY(payload.date);
+    const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
+
+    // / Extract vendor name ("Mutual_Trading")
+    const vendor = payload.field.replace(/^vendor_/, "").trim();
+
+    const cleanAmount = normalizeValue("amount", payload.value);
+
+    return await foodCostRepository.upsert(
+      week.week_id,
+      safeDate,
+      vendor,
+      cleanAmount
+    );
+  }
+};
+
+export const syncScheduleService = {
+  upsert: async (payload: {
+    sheet_name: string;
+    date: string;
+    field: string;
+    value: number | string;
+  }) => {
+    // Implementation would go here
+    const safeDate = normalizeMMDDYYYY(payload.date);
+
+    const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
+
+    // Split only by LAST underscore
+    const lastUnderscore = payload.field.lastIndexOf("_");
+    const role = payload.field.substring(0, lastUnderscore);    // left side (original string)
+    const shift = payload.field.substring(lastUnderscore + 1) as "AM" | "PM"; // right side
+
+    const cleanCount = normalizeValue("count", payload.value);
+
+    // Assuming there's a scheduleRepository similar to the others
+    return await scheduledStaffRepository.upsert(
+      week.week_id,
+      safeDate,
+      role ?? '',
+      shift,
+      cleanCount
+    );
+  },
+};  

@@ -22,7 +22,7 @@ export const syncToplineSchema = Joi.object({
     ).required(),
 
   date: Joi.string()
-    .pattern(Constant.mmddyyyy) 
+    .pattern(Constant.mmddyyyy)
     .required(),
 
   day_name: Joi.string().optional().allow(null, ""),
@@ -68,7 +68,6 @@ export const syncProfitSchema = Joi.object({
     .required()
 });
 
-
 export const syncDepositSchema = Joi.object({
   sheet_name: Joi.string().required(),
 
@@ -81,4 +80,51 @@ export const syncDepositSchema = Joi.object({
   value: Joi.alternatives()
     .try(Joi.string().allow(""), Joi.number())
     .required()
+});
+
+export const syncPeopleSchema = Joi.object({
+  sheet_name: Joi.string().required(),
+  date: Joi.string().pattern(Constant.mmddyyyy).required(),
+
+  field: Joi.string()
+    .valid("total_staff_scheduled", "shoutouts", "staffing_issues")
+    .required(),
+
+  value: Joi.alternatives().try(Joi.string().allow("", null), Joi.number())
+});
+
+export const syncOperationsSchema = Joi.object({
+  sheet_name: Joi.string().required(),
+  date: Joi.string().pattern(Constant.mmddyyyy).required(),
+  field: Joi.string().required(), // any field name including hour keys
+  value: Joi.alternatives().try(
+    Joi.string().allow("", null),
+    Joi.number(),
+    Joi.boolean()
+  ).required()
+});
+
+export const syncSalesPerHourSchema = Joi.object({
+  sheet_name: Joi.string().required(),
+  date: Joi.string().pattern(Constant.mmddyyyy).required(),
+  field: Joi.string().regex(/^sales_\d{1,2}_\d{1,2}$/).required(),
+  value: Joi.number().allow(null)
+});
+
+export const syncScheduledStaffSchema = Joi.object({
+  sheet_name: Joi.string().required(),
+  date: Joi.string().pattern(Constant.mmddyyyy).required(),
+  field: Joi.string()
+    .pattern(/^.+_(AM|PM)$/)
+    .required(),
+  value: Joi.number().integer().min(0).required()
+});
+
+export const syncFoodCostTrackingSchema = Joi.object({
+  sheet_name: Joi.string().required(),
+  date: Joi.string().pattern(Constant.mmddyyyy).required(),
+  field: Joi.string()
+    .regex(/^vendor_[A-Za-z0-9 _\-\/]+$/)
+    .required(),
+  value: Joi.number().allow(null).default(0)
 });

@@ -16,9 +16,7 @@ export const updateDepositSchema = Joi.object({
   amount_due: Joi.number().precision(2).optional().allow(null)
 });
 
-export const idParamSchema = Joi.object({
-  id: Joi.string().pattern(/^\d+$/).required()
-});
+
 
 export const weekIdParamSchema = Joi.object({
   week_id: Joi.string().required()

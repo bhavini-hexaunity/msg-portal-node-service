@@ -7,9 +7,9 @@ import { asyncHandler } from "../middleware/asyncHandler";
 import {
   createDepositSchema,
   updateDepositSchema,
-  idParamSchema,
   weekIdParamSchema,
 } from "../validations/deposit.validation";
+import { idParamSchema } from "../validations/id.validation";
 
 const router = Router();
 

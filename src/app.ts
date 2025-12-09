@@ -8,6 +8,12 @@ import { Decimal } from "@prisma/client/runtime/library";
 import toplineRoutes from "./routes/topline.routes";
 import profitRoutes from "./routes/profit.routes";
 import depositRoutes from "./routes/deposit.routes";
+import foodCostTrackingRoutes from "./routes/foodCostTracking.routes";
+import operationsRoutes from "./routes/operations.routes";
+import peopleRoutes from "./routes/people.routes";
+import guestCountRoutes from "./routes/guestCount.routes";
+import salesPerHourRoutes from "./routes/salesPerHour.routes";
+import scheduledStaffRoutes from "./routes/scheduledStaff.routes";
 
 
 // 🌟 FIX BigInt JSON issue here
@@ -48,6 +54,12 @@ app.use("/api/v1/restaurants", restaurantRoutes);
 app.use("/api/v1/topline", toplineRoutes );
 app.use("/api/v1/profit", profitRoutes );
 app.use("/api/v1/deposit", depositRoutes );
+app.use("/api/v1/foodCostTracking", foodCostTrackingRoutes );
+app.use("/api/v1/operations", operationsRoutes );
+app.use("/api/v1/people", peopleRoutes );
+app.use("/api/v1/guestCount", guestCountRoutes );
+app.use("/api/v1/salesPerHour", salesPerHourRoutes );
+app.use("/api/v1/scheduledStaff", scheduledStaffRoutes );
 app.use("/api/sheet-sync",syncRoutes);
 
 
