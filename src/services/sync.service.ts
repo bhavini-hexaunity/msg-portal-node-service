@@ -131,17 +131,24 @@ export const syncOperationsService = {
     // Implementation would go here
     const safeDate = normalizeMMDDYYYY(payload.date);
     const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
+    
+    const rawField = payload.field;
+    let field = rawField;
 
-    const cleanValue = normalizeValue(payload.field, payload.value);
+    // convert "guest_11_12" → "11-12"
+    if (rawField.startsWith("guest_")) {
+      field = rawField.replace("guest_", "");
+    }
 
-    const isGuestHour = /^\d{1,2}-\d{1,2}$/.test(payload.field);
+    const cleanValue = normalizeValue(field, payload.value);
+
+    const isGuestHour = /^\d{1,2}_\d{1,2}$/.test(field);
 
     if (isGuestHour) {
-      // save into guestCount table
       return await operationsRepository.upsertGuestCount(
         week.week_id,
         safeDate,
-        payload.field,
+        field,
         cleanValue
       );
     }
@@ -150,7 +157,7 @@ export const syncOperationsService = {
     return await operationsRepository.upsertByWeekAndDate(
       week.week_id,
       safeDate,
-      payload.field,
+      field,
       cleanValue
     );
   },
