@@ -3,7 +3,8 @@ import { RequestHandler } from "express";
 import { weeksService } from "../services/weeks.service";
 
 export const list: RequestHandler = async (req, res) => {
-  const data = await weeksService.findAll();
+  const year = req.query.year ? Number(req.query.year) : undefined;
+  const data = await weeksService.findAll(year);
   res.json({ success: true, data });
 };
 

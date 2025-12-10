@@ -14,6 +14,8 @@ import peopleRoutes from "./routes/people.routes";
 import guestCountRoutes from "./routes/guestCount.routes";
 import salesPerHourRoutes from "./routes/salesPerHour.routes";
 import scheduledStaffRoutes from "./routes/scheduledStaff.routes";
+import weekRoutes from "./routes/weeks.routes";
+
 
 
 // 🌟 FIX BigInt JSON issue here
@@ -51,6 +53,7 @@ app.get("/health", (_req, res) => {
 // API Routes
 // ------------------------
 app.use("/api/v1/restaurants", restaurantRoutes);
+app.use("/api/v1/weeks", weekRoutes);
 app.use("/api/v1/topline", toplineRoutes );
 app.use("/api/v1/profit", profitRoutes );
 app.use("/api/v1/deposit", depositRoutes );

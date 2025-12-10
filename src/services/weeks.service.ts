@@ -2,8 +2,8 @@ import { weeksRepository } from "../repositories/weeks.repository";
 import { generateWeekId, getWeekRange, normalizeMMDDYYYY } from "../utils/helper";
 
 export const weeksService = {
-  findAll: async () => {
-    return await weeksRepository.findAll();
+  findAll: async (year?: number) => {
+    return await weeksRepository.findAll(year);
   },
 
   findById: async (week_id: string) => {

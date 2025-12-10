@@ -5,7 +5,22 @@ export const weeksRepository = {
   /**
    * Get all weeks
    */
-  findAll: async () => prisma.weeks.findMany(),
+  findAll: async (year?: number) => {
+    if(year) {
+      const startOfYear = new Date(year, 0, 1);
+      const endOfYear = new Date(year, 11, 31);
+      return await prisma.weeks.findMany({
+        where: {
+          end_date:{
+            gte: startOfYear,
+            lte: endOfYear,
+          }
+        },
+        orderBy: { start_date: "asc" },
+      });
+    }
+    return await prisma.weeks.findMany();
+  },
 
   /**
    * Find a week by primary key (week_id)
