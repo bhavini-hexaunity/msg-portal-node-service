@@ -1,9 +1,16 @@
 import prisma from "../config/prisma";
+import { TOPLINE_COLUMNS, TOPLINE_FIELD_MAP } from "../utils/columns";
+import { formatByDate, queryByDateRange } from "../utils/dateRangeQuery";
 
 export const topLineRepository = {
+
+  findByDateRange: async (start: string, end: string) => {
+    const rows = await queryByDateRange("TopLine", start, end, TOPLINE_COLUMNS);
+    return formatByDate(rows as Record<string, any>[], TOPLINE_FIELD_MAP);
+  },
   /**
-     * Get all records
-     */
+   * Get all records
+   */
   findAll: async () => prisma.topLine.findMany(),
 
   /**
@@ -14,16 +21,6 @@ export const topLineRepository = {
       where: { id },
     }),
 
-  findByDateRange: async (start: string, end: string) => {
-    return prisma.$queryRaw`
-    SELECT *
-    FROM TopLine
-    WHERE STR_TO_DATE(date, '%m/%d/%Y')
-          BETWEEN STR_TO_DATE(${start}, '%m/%d/%Y')
-          AND STR_TO_DATE(${end}, '%m/%d/%Y')
-    ORDER BY STR_TO_DATE(date, '%m/%d/%Y')
-  `;
-  },
 
   /**
    * Find all rows for a given week

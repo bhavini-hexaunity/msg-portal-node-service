@@ -6,6 +6,11 @@ import { syncDepositSchema, syncFoodCostTrackingSchema, syncOperationsSchema, sy
 
 const router = Router();
 
+router.get(
+  "/range",
+  asyncHandler(syncController.getByDateRange)
+);
+
 router.post(
   "/topline",
   validate(syncToplineSchema,"body"),

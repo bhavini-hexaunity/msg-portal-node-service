@@ -1,7 +1,13 @@
 import prisma from "../config/prisma";
+import { PROFIT_COLUMNS, PROFIT_FIELD_MAP } from "../utils/columns";
+import { formatByDate, queryByDateRange } from "../utils/dateRangeQuery";
 
 
 export const profitRepository = {
+    findByDateRange: async (start: string, end: string) => {
+        const rows = await queryByDateRange("Profit", start, end, PROFIT_COLUMNS);
+        return formatByDate(rows as Record<string, any>[], PROFIT_FIELD_MAP);
+    },
     findAll: async () => {
         return await prisma.profit.findMany({
             orderBy: { date: "asc" }
@@ -18,16 +24,10 @@ export const profitRepository = {
             orderBy: { date: "asc" }
         });
     },
-    findByDateRange: async (start: string, end: string) => {
-        return prisma.$queryRaw`
-            SELECT *
-            FROM Profit
-            WHERE STR_TO_DATE(date, '%m/%d/%Y')
-                BETWEEN STR_TO_DATE(${start}, '%m/%d/%Y')
-                AND STR_TO_DATE(${end}, '%m/%d/%Y')
-            ORDER BY STR_TO_DATE(date, '%m/%d/%Y')
-        `;
-    },
+    // findByDateRange: async (start: string, end: string) => {
+    //     return queryByDateRange("Profit", start, end, PROFIT_COLUMNS);
+    // },
+
     create: async (data: {
         week_id: string;
         date: string;

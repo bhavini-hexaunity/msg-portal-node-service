@@ -1,6 +1,12 @@
 import prisma from "../config/prisma";
+import { DEPOSIT_COLUMNS, DEPOSIT_FIELD_MAP } from "../utils/columns";
+import { formatByDate, queryByDateRange } from "../utils/dateRangeQuery";
 
 export const depositRepository = {
+    findByDateRange: async (start: string, end: string) => {
+        const rows = await queryByDateRange("Deposit", start, end, DEPOSIT_COLUMNS);
+        return formatByDate(rows as Record<string, any>[], DEPOSIT_FIELD_MAP);
+    },
     findAll: async () => {
         return await prisma.deposit.findMany({
             orderBy: { date: "asc" },
@@ -12,18 +18,6 @@ export const depositRepository = {
             where: { id },
         });
     },
-
-    findByDateRange: async (start: string, end: string) => {
-        return prisma.$queryRaw`
-            SELECT *
-            FROM Deposit
-            WHERE STR_TO_DATE(date, '%m/%d/%Y')
-                BETWEEN STR_TO_DATE(${start}, '%m/%d/%Y')
-                AND STR_TO_DATE(${end}, '%m/%d/%Y')
-            ORDER BY STR_TO_DATE(date, '%m/%d/%Y')
-        `;
-    },
-
     findByWeek: async (week_id: string) => {
         return await prisma.deposit.findMany({
             where: { week_id },

@@ -4,7 +4,7 @@ export const topLineService = {
   findAll: async () => {
     return await topLineRepository.findAll();
   },
-
+  
   findByDateRange: async (start: string, end: string) =>
     topLineRepository.findByDateRange(start, end),
 

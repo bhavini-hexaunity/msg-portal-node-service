@@ -1,7 +1,21 @@
 import { RequestHandler } from "express";
-import { syncDepositService, syncProfitService, syncToplineService, 
-  syncScheduleService, syncFoodCostTrackingService, 
-  syncOperationsService,syncPeopleService,syncSalesPerHourService } from "../services/sync.service";
+import {
+  syncDepositService, syncProfitService, syncToplineService,
+  syncScheduleService, syncFoodCostTrackingService,
+  syncOperationsService, syncPeopleService, syncSalesPerHourService
+} from "../services/sync.service";
+
+export const getByDateRange: RequestHandler = async (req, res) => {
+  const { start, end } = req.query;
+  if (!start || !end) {
+    return res.status(400).json({
+      success: false,
+      message: "start and end query params are required",
+    });
+  }
+  const result = await syncToplineService.get(start as string, end as string);
+  res.json({ success: true , data: result });
+};
 
 export const handleToplineSync: RequestHandler = async (req, res) => {
   const result = await syncToplineService.upsert(req.body);
@@ -41,5 +55,4 @@ export const handlePeopleSync: RequestHandler = async (req, res) => {
 export const handleSalesPerHourSync: RequestHandler = async (req, res) => {
   const result = await syncSalesPerHourService.upsert(req.body);
   res.json({ success: true, data: result });
-};      
-  
+};

@@ -15,6 +15,26 @@ import { foodCostRepository } from "../repositories/foodCostTracking.repository"
 import { scheduledStaffRepository } from "../repositories/scheduledStaff.repository";
 
 export const syncToplineService = {
+  get: async (start: string, end: string) => {
+    const topline = await topLineRepository.findByDateRange(start as string, end as string);
+    const profit = await profitRepository.findByDateRange(start as string, end as string);
+    const deposit = await depositRepository.findByDateRange(start as string, end as string);
+    const people = await peopleRepository.findByDateRange(start as string, end as string);
+    const operations = await operationsRepository.findByDateRange(start as string, end as string);
+    const salesPerHour = await salesPerHourRepository.findByDateRange(start as string, end as string);
+    const foodCostTracking = await foodCostRepository.findByDateRange(start as string, end as string);
+    const scheduledStaff = await scheduledStaffRepository.findByDateRange(start as string, end as string);
+    return {
+      topline,
+      profit,
+      deposit,
+      people,
+      operations,
+      salesPerHour,
+      foodCostTracking,
+      scheduledStaff,
+    };
+  },
   upsert: async (payload: {
     sheet_name: string;
     field: string;
@@ -131,7 +151,7 @@ export const syncOperationsService = {
     // Implementation would go here
     const safeDate = normalizeMMDDYYYY(payload.date);
     const week = await weeksService.getOrCreateWeek(payload.sheet_name, safeDate);
-    
+
     const rawField = payload.field;
     let field = rawField;
 

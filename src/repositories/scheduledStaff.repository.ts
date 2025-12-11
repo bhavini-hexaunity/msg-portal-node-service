@@ -1,6 +1,24 @@
 import prisma from "../config/prisma";
+import { mapScheduleField, SCHEDULE_COLUMNS } from "../utils/columns";
+import { queryByDateRange } from "../utils/dateRangeQuery";
 
 export const scheduledStaffRepository = {
+  findByDateRange: async (start: string, end: string) => {
+    const rows = await queryByDateRange(
+      "ScheduledStaff",
+      start,
+      end,
+      SCHEDULE_COLUMNS
+    );
+    const output: Record<string, Record<string, number | null>> = {};
+    for (const row of rows as any[]) {
+      const date = row.date as string;
+      if (!output[date]) output[date] = {};
+      const key = mapScheduleField(row.role, row.shift);
+      output[date][key] = row.count ?? 0;
+    }
+    return output;
+  },
   findAll: async () => {
     return await prisma.scheduledStaff.findMany({
       orderBy: { date: "asc" },
