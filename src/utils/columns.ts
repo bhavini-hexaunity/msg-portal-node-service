@@ -140,7 +140,7 @@ export function mapGuestField(hour: string): string {
 }
 
 export function mapSalesField(hour: string): string {
-    return "sales_" + hour.replace("-", "_"); // "11-12" → "sales_11_12"
+    return  hour.replace("-", "_"); // "11-12" → "sales_11_12"
 }
 export function mapScheduleField(role: string, shift: "AM" | "PM"): string {
   return `${role}_${shift}`;
